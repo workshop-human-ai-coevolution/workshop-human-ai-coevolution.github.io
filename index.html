@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Workshop on Human-AI Co-Evolution: Treating Human Evolution as a Goal in the Age of Agentic AI (NeurIPS 2026)</title>
+  <meta content="A NeurIPS 2026 workshop arguing that human evolution should be an explicit goal of human-AI co-evolution: as AI gains execution authority, what should humans become, and how do we build AI that helps them get there?" name="description">
+  <meta content="human-AI co-evolution, human evolution, agentic AI, oversight, deskilling, evaluative expertise, metacognition, AI safety, HCI, NeurIPS 2026" name="keywords">
+
+  <link href="assets/img/favicon.svg" rel="icon" type="image/svg+xml">
+  <link href="assets/img/favicon.svg" rel="apple-touch-icon">
+
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Raleway:300,400,500,700,800" rel="stylesheet">
+
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <link href="assets/css/style.css" rel="stylesheet">
+
+  <style>
+    /* ---- Slight style refresh: teal / "co-evolution" accent palette ---- */
+    :root {
+      --accent: #0e8c9a;
+      --accent-dark: #0b4f59;
+      --accent-light: #e4f4f6;
+      --highlight: #0d9488; /* brighter teal-green for in-text links/headings so they stand out from black body text */
+    }
+    a { color: var(--highlight); }
+    a:hover { color: var(--accent-dark); }
+    /* Keep the proposal banner pinned above the fixed nav so they never overlap.
+       --banner-h is measured at runtime and used to offset the header + hero. */
+    :root { --banner-h: 41px; }
+    #proposal-banner {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1001;
+    }
+    #header { top: var(--banner-h) !important; }
+    #hero { margin-top: var(--banner-h); }
+    /* Retheme the template's red accent to teal across visible chrome */
+    .navbar .active,
+    .navbar .active:focus,
+    .navbar li:hover > a { color: var(--accent); }
+    .navbar .active:before { background: var(--accent); }
+    .navbar-mobile .active,
+    .navbar-mobile li:hover > a { color: var(--accent); }
+    .section-header::before { background: var(--accent) !important; }
+    .back-to-top { background: var(--accent-dark) !important; }
+    .back-to-top:hover { background: var(--accent) !important; }
+    #footer { border-top: 3px solid var(--accent); }
+
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      font-family: Arial, sans-serif;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin: 20px 0;
+    }
+    .schedule-table th,
+    .schedule-table td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #ccc;
+      text-align: left;
+    }
+    .schedule-table th {
+      background-color: var(--accent-dark);
+      color: #fff;
+      font-weight: bold;
+    }
+    .schedule-table tbody tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    .schedule-table tbody tr:hover {
+      background-color: var(--accent-light);
+    }
+    @media (max-width: 768px) {
+      .schedule-table th,
+      .schedule-table td {
+        padding: 10px;
+      }
+    }
+    #organizers .speaker img,
+    #speakers .speaker img,
+    #panelists .speaker img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 15px;
+      border: 3px solid var(--accent-light);
+    }
+    #sponsors .speaker img {
+      width: 300px;
+      height: auto;
+      object-fit: contain;
+      margin-bottom: 15px;
+    }
+    /* Topic panels get a colored accent edge + gentle lift on hover */
+    #topic .topic-panel {
+      border-left: 5px solid var(--accent) !important;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    #topic .topic-panel:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 22px rgba(11, 79, 89, 0.16) !important;
+    }
+    /* Four-phase framework cards */
+    .phase-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-top: 30px;
+    }
+    @media (max-width: 900px) {
+      .phase-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 520px) {
+      .phase-grid { grid-template-columns: 1fr; }
+    }
+    .phase-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px 18px;
+      box-shadow: 0 3px 12px rgba(11, 79, 89, 0.10);
+      border-top: 4px solid var(--accent);
+    }
+    .phase-card .phase-name {
+      font-weight: 800;
+      color: var(--accent-dark);
+      font-size: 1.15em;
+      margin-bottom: 10px;
+    }
+    .phase-card .phase-row { font-size: 14.5px; margin-bottom: 8px; color: #444; }
+    .phase-card .phase-row b { color: #222; }
+    .badge-accent {
+      display: inline-block;
+      background: linear-gradient(90deg, var(--accent-dark), var(--accent));
+      color: #fff;
+      font-size: 0.78em;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.04em;
+      vertical-align: middle;
+      margin-left: 6px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header id="header" class="d-flex align-items-center">
+    <div class="container-fluid container-xxl d-flex align-items-center">
+
+      <div id="logo" class="me-auto">
+        <a href="index.html" class="scrollto" style="font-weight: 800; font-size: 1.25em; color: #ffffff; text-decoration: none;">Human-AI Co-Evolution</a>
+      </div>
+
+      <nav id="navbar" class="navbar order-last order-lg-0">
+        <ul>
+          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+          <li><a class="nav-link scrollto" href="#about">About</a></li>
+          <li><a class="nav-link scrollto" href="#topic">Topics</a></li>
+          <li><a class="nav-link scrollto" href="#cfp">Call for Papers</a></li>
+          <li><a class="nav-link scrollto" href="#speakers">Speakers</a></li>
+          <li><a class="nav-link scrollto" href="#schedule">Schedule</a></li>
+          <li><a class="nav-link scrollto" href="#organizers">Organizers</a></li>
+          <li><a class="nav-link scrollto" href="mailto:li.xu2@northeastern.edu">Contact</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav>
+
+    </div>
+  </header>
+
+  <div id="proposal-banner" style="background: #fff3cd; color: #5b4a00; text-align: center; padding: 10px 15px; font-size: 1em; border-bottom: 1px solid #f0d97b;">
+    <strong>⚠ Proposal Stage:</strong> This site describes a workshop proposal submitted to <a href="https://neurips.cc/" target="_blank" rel="noopener noreferrer" style="color: #5b4a00; text-decoration: underline;">NeurIPS 2026</a>. Speakers, dates, and program details are tentative and will be confirmed after workshop acceptance.
+  </div>
+
+  <section id="hero">
+    <div class="hero-container" data-aos="zoom-in" data-aos-delay="200">
+      <div style="display: inline-block; background: linear-gradient(90deg, #0b4f59, #0e8c9a); color: #ffffff; font-size: 1em; font-weight: 700; padding: 6px 20px; border-radius: 4px; margin-bottom: 22px; letter-spacing: 0.08em; text-transform: uppercase;">
+        Proposal
+      </div>
+      <h1 class="mb-4 pb-0" style="text-transform: none;">
+        Human-AI Co-Evolution<br>
+      </h1>
+      <h2 class="mb-4 pb-0" style="text-transform: none; color: white; font-size: 1.3em;">
+        Treating Human Evolution as a Goal in the Age of Agentic AI
+      </h2>
+      <h2 class="mb-4 pb-0" style="text-transform: none; color: white;">
+        NeurIPS 2026 &middot; December 11-12, 2026 &middot; Sydney, Australia
+      </h2>
+
+      <div class="social-links" style="margin-top: 25px;">
+        <div style="margin-bottom: 20px; color: white; font-size: 1.2em;">
+          As AI gains execution authority, what should humans become, and how do we build AI that helps them get there?
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main id="main">
+
+    <section id="about">
+      <div class="container position-relative" data-aos="fade-up">
+        <div class="row">
+          <div class="col-lg-12">
+            <h2>About The Workshop</h2>
+            <p style="font-size: 18px;">
+              AI no longer only answers questions. It drafts artifacts, runs end-to-end workflows, and coordinates other agents on our behalf. As people delegate more, their role shifts from <b>doing</b> the work to <b>judging</b>, <b>verifying</b>, <b>supervising</b>, and <b>governing</b> it. But the very capabilities this demands, such as critical thinking, evaluative expertise, metacognitive monitoring, and systems thinking, fade with disuse. This is Bainbridge's <i>irony of automation</i>, and the evidence is mounting: people over-trust AI, miss its errors, and rate flawed outputs as better than they are.
+            </p>
+            <p style="font-size: 18px;">
+              Most research on human-AI co-evolution stays <b>AI-centric</b>: improving AI with humans out of the loop, or treating humans as a route to better models. <b>This workshop takes the opposite stance: human evolution should be an explicit <i>goal</i>, not merely a means to stronger models.</b> It is not zero-sum: when people evolve the skills to use AI well, they use it more effectively <i>and</i> give better feedback that improves the next model. We convene researchers across ML, RL, NLP, HCI, the learning sciences, and AI safety, building on the founding <a href="https://sites.google.com/view/haic-2025/" target="_blank" rel="noopener noreferrer">HAIC @ ICLR 2025</a> and the team's <a href="https://workshop-multi-turn-interaction.github.io/" target="_blank" rel="noopener noreferrer">1st Multi-Turn Interaction Workshop @ NeurIPS 2025</a>.
+            </p>
+
+            <h3 style="margin-top: 35px; color: #0d9488;">A Four-Phase Framework</h3>
+            <p style="font-size: 18px;">
+              We organize the question by how much execution authority humans hand to AI. As AI advances from <b>Tool</b> to <b>Assistant</b> to <b>Executor</b> to <b>Organization</b>, it weakens a specific human capability. Each phase names the skill to sustain and the AI-side support that helps, and the same framework doubles as our research agenda.
+            </p>
+            <div class="phase-grid">
+              <div class="phase-card">
+                <div class="phase-name">1 &middot; Tool</div>
+                <div class="phase-row"><b>Returns answers.</b></div>
+                <div class="phase-row">⚠ Weakened reasoning</div>
+                <div class="phase-row">🎯 Sustain: <b>critical thinking</b></div>
+                <div class="phase-row">🛠 AI support: reasoning scaffolds</div>
+              </div>
+              <div class="phase-card">
+                <div class="phase-name">2 &middot; Assistant</div>
+                <div class="phase-row"><b>Produces partial artifacts.</b></div>
+                <div class="phase-row">⚠ Missed flaws</div>
+                <div class="phase-row">🎯 Sustain: <b>evaluative expertise</b></div>
+                <div class="phase-row">🛠 AI support: verifiable artifacts</div>
+              </div>
+              <div class="phase-card">
+                <div class="phase-name">3 &middot; Executor</div>
+                <div class="phase-row"><b>Runs autonomous workflows.</b></div>
+                <div class="phase-row">⚠ Undetected drift</div>
+                <div class="phase-row">🎯 Sustain: <b>metacognitive monitoring</b></div>
+                <div class="phase-row">🛠 AI support: interruptible workflows</div>
+              </div>
+              <div class="phase-card">
+                <div class="phase-name">4 &middot; Organization</div>
+                <div class="phase-row"><b>Coordinates systems of agents.</b></div>
+                <div class="phase-row">⚠ Lost goal traceability</div>
+                <div class="phase-row">🎯 Sustain: <b>systems thinking</b></div>
+                <div class="phase-row">🛠 AI support: auditable systems</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="topic" class="section-with-bg">
+      <br>
+      <br>
+      <div class="container" data-aos="fade-up">
+        <div class="section-header">
+          <h2>Topics</h2>
+          <p>We organize submissions around five themes that map onto the framework above. Topics include but are not limited to:</p>
+        </div>
+        <section id="topics">
+          <div class="container">
+            <div class="row mb-4">
+              <div class="col-12">
+                <div class="topic-panel interactive-panel p-4 border shadow-sm rounded" style="background: #ffffff;">
+                  <b style="font-size: 18px; color: #343a40;">(1) Evidence and Benchmarks for Human Capability Change:</b>
+                  <p style="color: #6c757d; margin-top: 10px;">
+                    AI use does not change human capability in one direction: the same tool that speeds knowledge access can hollow out reasoning through disuse. We invite work that builds the <i>evidence base</i> for this two-sided effect: methods to detect deskilling, cognitive offloading, automation bias, and miscalibration; longitudinal and AI-off study designs that separate genuine capability from AI-propped performance; and measurement that scales with AI autonomy.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-4">
+              <div class="col-12">
+                <div class="topic-panel interactive-panel p-4 border shadow-sm rounded" style="background: #ffffff;">
+                  <b style="font-size: 18px; color: #343a40;">(2) Human-Evolution-Centered AI Design:</b>
+                  <p style="color: #6c757d; margin-top: 10px;">
+                    If AI can erode human capability, it can also be built to sustain it. We seek interaction and system design that keeps humans sharp rather than passive: reasoning scaffolds and cognitive forcing functions; artifacts that expose assumptions and likely failure modes instead of only a polished result; agents that surface progress and pause at low confidence; and intent-preserving audit trails for multi-agent systems.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-4">
+              <div class="col-12">
+                <div class="topic-panel interactive-panel p-4 border shadow-sm rounded" style="background: #ffffff;">
+                  <b style="font-size: 18px; color: #343a40;">(3) From Oversight to Governance Across Levels of Autonomy:</b>
+                  <p style="color: #6c757d; margin-top: 10px;">
+                    As humans move from doing to verifying to supervising to governing, checking everything by hand stops scaling. We invite work on scalable oversight at each phase: grounded verification of AI artifacts; intervention and takeover when workflows drift; sampling-based auditing of agent trajectories; AI-assisted oversight and its failure modes; and governance of multi-agent organizations through constitutional constraints and risk thresholds.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-4">
+              <div class="col-12">
+                <div class="topic-panel interactive-panel p-4 border shadow-sm rounded" style="background: #ffffff;">
+                  <b style="font-size: 18px; color: #343a40;">(4) Co-Evolution Feedback Loops Between Humans and AI Development:</b>
+                  <p style="color: #6c757d; margin-top: 10px;">
+                    Human evolution helps humans, and it also produces the signal AI learns from. When people approve outputs without thinking, reward goes to agreement, length, and formatting instead of truth, and models drift toward sycophancy and mode collapse. We connect human capability to model development: how better judgment yields better data; bidirectional human-AI alignment; the risks of training on AI-generated or low-effort feedback; and evaluation that rewards correctness over polish.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-4">
+              <div class="col-12">
+                <div class="topic-panel interactive-panel p-4 border shadow-sm rounded" style="background: #ffffff;">
+                  <b style="font-size: 18px; color: #343a40;">(5) Scaling Human Evolution across Education, Work, and Society:</b>
+                  <p style="color: #6c757d; margin-top: 10px;">
+                    Individual practice is not enough; the conditions for oversight must be built into institutions. We welcome work on AI literacy reframed as a capability progression rather than a static checklist; curricula that pair AI-assisted output with AI-off explanations; organizational practices such as review pipelines, checkpoints, and audits; and policy questions including liability, regulation that preserves auditability, and labor-market dynamics.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <br>
+      <br>
+    </section>
+
+    <section id="cfp">
+      <div class="container" data-aos="fade-up">
+        <div class="section-header">
+          <h2>Call For Papers</h2>
+        </div>
+        <p>
+          The <b>Workshop on Human-AI Co-Evolution</b> (NeurIPS 2026) invites position papers, empirical studies, systems and benchmarks, and provocations on making human evolution a goal of human-AI co-evolution. We especially encourage work grounded in domains where the shift is already underway: software engineering, science, medicine, law, driving, and education. Submissions must present original work that has not appeared at an archival venue.
+        </p>
+        <h3>Key Dates</h3>
+        <ul class="fa-ul">
+          <li><span class="fa-li"><i class="fa fa-check"></i></span><b>Submission Deadline</b>: <span style="color: red; font-weight: bold;">August 29, 2026, AoE</span> (tentative)</li>
+          <li><span class="fa-li"><i class="fa fa-check"></i></span><b>Notification</b>: <span style="color: red; font-weight: bold;">on or before September 29, 2026, AoE</span></li>
+          <li><span class="fa-li"><i class="fa fa-check"></i></span><b>Camera-Ready</b>: early December 2026</li>
+          <li><span class="fa-li"><i class="fa fa-check"></i></span><b>Workshop Date</b>: December 11-12, 2026 (Sydney)</li>
+        </ul>
+        All deadlines follow the <a href="https://time.is/Anywhere_on_Earth">Anywhere on Earth (AoE)</a> timezone. Final dates will be confirmed upon workshop acceptance and aligned with the NeurIPS 2026 timeline.
+        <br>
+        <br>
+        <h3>Submission Site</h3>
+        <p>
+          Submissions are <b>non-archival</b> and managed via OpenReview, remaining private during review. All authors should maintain up-to-date OpenReview profiles for conflict-of-interest management and paper matching. The submission portal will be announced once the workshop is accepted.
+        </p>
+        <h3>Scope</h3>
+        We welcome contributions across the five themes above. Accepted papers are presented as posters, with a subset selected for oral or spotlight talks. The workshop is in person at NeurIPS 2026 in Sydney.
+        <br>
+        <br>
+        <h3>Submission Guidelines</h3>
+        <h5>Tracks &amp; Formatting</h5>
+        Submissions must be in English and use the NeurIPS 2026 workshop LaTeX template, submitted as a <b>single PDF</b>:
+        <ul class="fa-ul">
+          <li><span class="fa-li"><i class="fa fa-check"></i></span><b>Full Papers</b>: at most 8 pages (main text)</li>
+          <li><span class="fa-li"><i class="fa fa-check"></i></span><b>Short Papers</b>: at most 4 pages (main text)</li>
+          <li><span class="fa-li"><i class="fa fa-check"></i></span><b>Tiny Papers</b>: lower the barrier for under-resourced and early-career researchers, welcoming fresh perspectives, small studies, and provocations.</li>
+          <li><span class="fa-li"><i class="fa fa-check"></i></span>References and appendices do not count toward the page limit, but the main text must be self-contained.</li>
+        </ul>
+        <h5>Review</h5>
+        The workshop uses <b>double-blind review</b>. Submissions must be anonymized, with author names, affiliations, and acknowledgments removed and prior work cited in the third person. Every submission receives at least three reviews via OpenReview, with conflicts managed through automated detection.
+        <br>
+        <br>
+        <h5>Non-Archival Policy</h5>
+        <p><b>The workshop is non-archival.</b> Papers under review elsewhere are welcome, and accepted papers may be published at other venues afterward. Work already published at NeurIPS or other archival venues should not be submitted.
+        </p>
+        <h5>Contact</h5>
+        Email the contact organizers: <a href="mailto:yu.chi@northeastern.edu">Simon Yu</a>, <a href="mailto:li.xu2@northeastern.edu">Xu Li</a>, and <a href="mailto:we.shi@northeastern.edu">Weiyan Shi</a>.
+      </div>
+    </section>
+
+    <section id="speakers" class="section-with-bg">
+      <div class="container" data-aos="fade-up">
+        <div class="section-header">
+          <h2>Speakers</h2>
+          <p>Invited speakers across human-centered NLP, HCI, reasoning and self-improvement, and the science of foundation models (several confirmed; remaining invitations in progress).</p>
+        </div>
+        <div class="row">
+          <div class="col-md-4 col-sm-4 col-6">
+            <div class="speaker" data-aos="fade-up" data-aos-delay="100" style="text-align: center;">
+              <img src="assets/img/speakers/diyi_yang.jpg" alt="Diyi Yang" class="img-fluid">
+              <br><a href="https://cs.stanford.edu/~diyiy/" style="font-size: 1.2em; color: #0b4f59;">Diyi Yang</a></br>
+              <p>Stanford University <span class="badge-accent">Confirmed</span></p>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-4 col-6">
+            <div class="speaker" data-aos="fade-up" data-aos-delay="150" style="text-align: center;">
+              <img src="assets/img/speakers/jason_weston.jpg" alt="Jason Weston" class="img-fluid">
+              <br><a href="https://www.thespermwhale.com/jaseweston/" style="font-size: 1.2em; color: #0b4f59;">Jason Weston</a></br>
+              <p>Meta FAIR &amp; NYU <span class="badge-accent">Confirmed</span></p>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-4 col-6">
+            <div class="speaker" data-aos="fade-up" data-aos-delay="200" style="text-align: center;">
+              <img src="assets/img/speakers/hua_shen.png" alt="Hua Shen" class="img-fluid">
+              <br><a href="https://hua-shen.org/" style="font-size: 1.2em; color: #0b4f59;">Hua Shen</a></br>
+              <p>NYU Shanghai <span class="badge-accent">Confirmed</span></p>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-4 col-6">
+            <div class="speaker" data-aos="fade-up" data-aos-delay="250" style="text-align: center;">
+              <img src="assets/img/speakers/sherry_wu.png" alt="Tongshuang (Sherry) Wu" class="img-fluid">
+              <br><a href="https://www.cs.cmu.edu/~sherryw/" style="font-size: 1.2em; color: #0b4f59;">Tongshuang (Sherry) Wu</a></br>
+              <p>Carnegie Mellon University <span class="badge-accent">Confirmed</span></p>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-4 col-6">
+            <div class="speaker" data-aos="fade-up" data-aos-delay="300" style="text-align: center;">
+              <img src="assets/img/speakers/natasha_jaques.jpg" alt="Natasha Jaques" class="img-fluid">
+              <br><a href="https://natashajaques.ai/" style="font-size: 1.2em; color: #0b4f59;">Natasha Jaques</a></br>
+              <p>University of Washington <span class="badge-accent">Confirmed</span></p>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-4 col-6">
+            <div class="speaker" data-aos="fade-up" data-aos-delay="350" style="text-align: center;">
+              <img src="assets/img/speakers/daniel_fried.jpg" alt="Daniel Fried" class="img-fluid">
+              <br><a href="https://dpfried.github.io/" style="font-size: 1.2em; color: #0b4f59;">Daniel Fried</a></br>
+              <p>Carnegie Mellon University <span style="display:inline-block; background:#e9eaed; color:#555; font-size:0.78em; font-weight:700; padding:3px 10px; border-radius:999px; margin-left:6px;">Tentative</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="schedule" style="padding-top: 20px;">
+      <div class="container" data-aos="fade-up">
+        <div class="section-header">
+          <h2>Tentative Schedule</h2>
+          <p>A full-day program with four-to-six invited talks (each with Q&amp;A), two contributed sessions, two poster sessions, and a panel. Titles are illustrative; the final schedule is confirmed closer to the workshop.</p>
+        </div>
+        <style>
+          .schedule-table td.time, .schedule-table th:first-child { white-space: nowrap; }
+          .schedule-table tr.break-row td { background-color: #fff3cd80 !important; }
+          .schedule-table tr.poster-row td { background-color: #d8f0f280 !important; }
+        </style>
+        <div class="table-responsive">
+          <table class="schedule-table table align-middle">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Session</th>
+                <th>Speaker</th>
+                <th>Talk&nbsp;Title</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="time">09:00 – 09:10</td>
+                <td>Opening Remarks: <em>Human Evolution as a Goal</em></td>
+                <td colspan="2">Organizers</td>
+              </tr>
+              <tr>
+                <td class="time">09:10 – 09:40</td>
+                <td>Invited Talk 1</td>
+                <td>Diyi Yang (Stanford)</td>
+                <td>Human-Centered NLP and Augmenting Human Capability</td>
+              </tr>
+              <tr>
+                <td class="time">09:40 – 10:10</td>
+                <td>Invited Talk 2</td>
+                <td>Jason Weston (Meta/NYU)</td>
+                <td>Self-Improving Systems and the Autonomy Frontier</td>
+              </tr>
+              <tr>
+                <td class="time">10:10 – 10:40</td>
+                <td>Invited Talk 3</td>
+                <td>Hua Shen (NYU Shanghai)</td>
+                <td>Bidirectional Human-AI Alignment</td>
+              </tr>
+              <tr class="poster-row">
+                <td class="time">10:40 – 11:40</td>
+                <td colspan="3">Poster Session 1 &amp; Coffee</td>
+              </tr>
+              <tr>
+                <td class="time">11:40 – 12:10</td>
+                <td>Invited Talk 4</td>
+                <td>Sherry Wu (CMU)</td>
+                <td>Keeping Humans in the Loop on AI-Generated Work</td>
+              </tr>
+              <tr class="break-row">
+                <td class="time">12:10 – 13:20</td>
+                <td colspan="3">Lunch Break</td>
+              </tr>
+              <tr>
+                <td class="time">13:20 – 13:50</td>
+                <td>Invited Talk 5</td>
+                <td>Natasha Jaques (UW)</td>
+                <td>Social RL and the Human-AI Feedback Loop</td>
+              </tr>
+              <tr>
+                <td class="time">13:50 – 14:20</td>
+                <td>Invited Talk 6</td>
+                <td>Daniel Fried (CMU)</td>
+                <td>Language Agents as Collaborators</td>
+              </tr>
+              <tr>
+                <td class="time">14:20 – 14:50</td>
+                <td>Contributed Session (2 Oral + 4 Spotlight)</td>
+                <td colspan="2">Selected authors</td>
+              </tr>
+              <tr>
+                <td class="time">14:50 – 15:35</td>
+                <td>Panel Discussion</td>
+                <td colspan="2"><em>What Should Humans Become?</em> (Panelists drawn from invited speakers)</td>
+              </tr>
+              <tr class="poster-row">
+                <td class="time">15:35 – 16:35</td>
+                <td colspan="3">Poster Session 2 &amp; Coffee</td>
+              </tr>
+              <tr>
+                <td class="time">16:35 – 16:50</td>
+                <td>Paper Awards &amp; Closing Remarks</td>
+                <td colspan="2">Organizers</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="organizers">
+      <div class="container" data-aos="fade-up">
+        <div class="section-header">
+          <h2>Organizers</h2>
+          <p>An interdisciplinary committee spanning ML, RL, HCI, AI safety, and the learning sciences, and authors of the position argument this workshop is built on.</p>
+        </div>
+        <div class="row">
+          <div class="col-lg col-md-4 col-sm-6 col-6">
+            <div class="speaker" data-aos="fade-up" data-aos-delay="100" style="text-align: center;">
+              <img src="assets/img/organizers/simon_yu.jpeg" alt="Simon Yu" class="img-fluid">
+              <br><a href="https://simonucl.github.io/" style="font-size: 1.2em; color: #0b4f59;">Simon Yu</a></br>
+              <p>Northeastern University</p>
+            </div>
+          </div>
+          <div class="col-lg col-md-4 col-sm-6 col-6">
+            <div class="speaker" data-aos="fade-up" data-aos-delay="150" style="text-align: center;">
+              <img src="assets/img/organizers/xu_li.jpg" alt="Xu Li" class="img-fluid">
+              <br><a href="https://xuli0929.github.io/" style="font-size: 1.2em; color: #0b4f59;">Xu Li</a></br>
+              <p>Northeastern University</p>
+            </div>
+          </div>
+          <div class="col-lg col-md-4 col-sm-6 col-6">
+            <div class="speaker" data-aos="fade-up" data-aos-delay="200" style="text-align: center;">
+              <img src="assets/img/organizers/bo_liu.png" alt="Bo Liu" class="img-fluid">
+              <br><a href="https://benjamin-eecs.github.io/" style="font-size: 1.2em; color: #0b4f59;">Bo Liu</a></br>
+              <p>University of Washington</p>
+            </div>
+          </div>
+          <div class="col-lg col-md-4 col-sm-6 col-6">
+            <div class="speaker" data-aos="fade-up" data-aos-delay="250" style="text-align: center;">
+              <img src="assets/img/organizers/qianou_ma.png" alt="Qianou (Christina) Ma" class="img-fluid">
+              <br><a href="https://qianouma.com/en/about.html" style="font-size: 1.2em; color: #0b4f59;">Qianou (Christina) Ma</a></br>
+              <p>Carnegie Mellon University</p>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-lg col-md-4 col-sm-6 col-6">
+            <div class="speaker" data-aos="fade-up" data-aos-delay="100" style="text-align: center;">
+              <img src="assets/img/organizers/marwa_abdulhai.png" alt="Marwa Abdulhai" class="img-fluid">
+              <br><a href="https://abdulhaim.github.io/" style="font-size: 1.2em; color: #0b4f59;">Marwa Abdulhai</a></br>
+              <p>UC Berkeley</p>
+            </div>
+          </div>
+          <div class="col-lg col-md-4 col-sm-6 col-6">
+            <div class="speaker" data-aos="fade-up" data-aos-delay="150" style="text-align: center;">
+              <img src="assets/img/organizers/weiyan_shi.jpg" alt="Weiyan Shi" class="img-fluid">
+              <br><a href="https://wyshi.github.io/" style="font-size: 1.2em; color: #0b4f59;">Weiyan Shi</a></br>
+              <p>Northeastern University</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <br>
+    <br>
+
+  </main>
+
+  <footer id="footer">
+    <div class="container">
+      <div class="copyright"></div>
+      <div class="credits">
+        Template adopted from <a href="https://living-agents.github.io/">Living Agents @ COLM 2026</a>.<br>
+        Hero photo: <a href="https://commons.wikimedia.org/wiki/File:Sydney_Harbour_Bridge_and_Sydney_Opera_House_panorama.jpg" target="_blank" rel="noopener noreferrer">Sydney Harbour Bridge and Opera House</a> by Kgbo, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>.
+      </div>
+    </div>
+  </footer>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+
+  <script src="assets/js/main.js"></script>
+
+  <script>
+    // Match the header/hero offset to the proposal banner's actual height
+    // (it wraps to two lines on narrow screens), so they never overlap.
+    (function () {
+      var banner = document.getElementById('proposal-banner');
+      if (!banner) return;
+      function sync() {
+        document.documentElement.style.setProperty('--banner-h', banner.offsetHeight + 'px');
+      }
+      window.addEventListener('load', sync);
+      window.addEventListener('resize', sync);
+      sync();
+    })();
+  </script>
+
+</body>
+
+</html>
